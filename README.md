@@ -87,7 +87,35 @@
   * CI = (present - lower)/(upper - lower)
     * upper and lower thresholds are not hard coded, rather they are computed on a data-driven rolling window.
 
-## Overall Sensor Health (**SensorHealthScore(CI, VI, thresholds, alpha)**) Assessment
+
+## Dynamic Operating Threshold for Sensors
+
+#### Return safety operating margins both for compliance and volatility
+
+* Parameters
+    * data
+      * It represents rolling window data
+    * num
+      * It represents rolling window size
+  * Return
+    * It represents a list of two objects: marginCI and marginVI
+      * marginCI represents safety margin for compliance, including:
+        * lowWarning: Mean(data) - (factorCI * warningToAlarm) * Std(data)
+        * lowAlarm: Mean(data) - (factorCI) * Std(data)
+        * highWarning: Mean(data) + (factorCI * warningToAlarm) * Std(data)
+        * highAlarm: Mean(data) + (factorCI) * Std(data)
+          * factorCI parametrizes the burstiness of the data for compliance risk:
+            * Kurt(data) < 0 ?  factorCI = 3: factorCI = 2;
+
+      * marginVI represents safety margin for volatility, including: 
+        * warning: 0.1 * factorVI
+        * alarm: 0.2 * factorVI
+          * factorVI parametrizes the burstiness of the data for volality risk:
+            * Kurt(data) < 0 ?  factorVI = 1: factorVI = 0.75
+
+
+
+##  Sensor Health Score (**SensorHealthScore(CI, VI, thresholds, alpha)**)
 
 #### Return the score that commbines overall sensor health, including compliance and volatility risks
 
@@ -109,11 +137,78 @@
 
 #### Comment
 * Twelve different scenarios are considered to determine the sensor health score
-  * Case 1: Both CI and VI are defined
-    * Score: null
-    
 
+###### Cases where CI and VI are undefined
+  * Case 1: Both CI and VI are UNDEFINED
+    * score: null
+    * message: alpha must be between 0 (inclusive) and 1 (inclusive)
 
+  * Case 2: Only VI is UNDEFINED
+    * score: CI
+    * message: volatility risk is not defined
+  
+  * Case 3: Only CI is UNDEFINED
+    * score: VI
+    * message: compliance risk is not defined
 
- 
+###### Cases where alarms are breached
+  * Case 4: CI < lowAlarm
+    * score: 0
+    * message: lower threshold breached
+
+  * Case 5: CI > highAlarm
+    * score: 0
+    * message: upper threshold breached
+
+  * Case 6: VI > alarm
+    * score: 0
+    * message: volatility margin breached
+
+###### Cases where both warnings are violated
+  * Case 7: CI < lowWarning AND VI > warning
+    * score: 0 
+    * message: high volatility near lower threshold
+
+  * Case 8: CI > highWarning AND VI > warning
+    * score: 0 
+    * message: high volatility near upper threshold
+
+###### Cases where only one warning is violated
+
+  * Case 9: CI < lowWarning 
+    * score: (CI - marginCI.lowAlarm)/(marginCI.lowWarning - marginCI.lowAlarm)
+    * message: operating near lower threshold
+  
+  * Case 10: CI > highWarning
+    * score: (marginCI.highAlarm - CI)/(marginCI.highAlarm - marginCI.highWarning)
+    * message: operating near upper threshold
+  
+  * Case 11: VI > warning
+    * score: (marginVI.alarm- VI)/(marginVI.alarm - marginVI.warning) 
+    * message: operating with high volatility
+
+  * Default:
+    * score: alpha * complianceRisk  + (1 - alpha) * complianceRisk
+      * complianceRisk = (CI - marginCI.lowWarning)/(marginCI.highWarning - marginCI.lowWarning)
+      * volatilityRisk = (marginVI.alarm - VI)/(marginVI.alarm - marginVI.warning)
+    * message: healthy sensor
+  
+
+##  Device Health Score (**DeviceHealthScore(id, num)**)
+
+#### Return the score that commbines all sensor health, including compliance and volatility risks 
+
+* Parameters
+    * id
+      * Device Id
+
+    * num
+      * It represents rolling window size
+
+  * Return
+    * It represents a marco health score for the device
+
+#### Comment
+* Device-SensorHealthScore maps maps device ids to sensor health scores
+* It returns SMA over the specified rolling window
 
