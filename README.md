@@ -68,7 +68,7 @@
 * Our volatility measure is coefficient of variance
   * Ratio of standard deviation and mean in rolling window
 
-## Compliance Risk (**VI(present, upper, lower)**) Assessment
+## Compliance Risk (**CI(present, upper, lower)**) Assessment
 
 #### Return the compliance risk of the sensor
 
