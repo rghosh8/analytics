@@ -1,8 +1,6 @@
-# stat
+# Stat Module
 
-#### This document aims to explain basicParameters.js, which includes basic statistical utilities
-
-#### First few basic statistical parameters are computed:
+#### Few supporting statistical utilities are computed:
 
 * Size of a time series
 * Sum of all the elements in the series
