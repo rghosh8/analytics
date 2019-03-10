@@ -12,7 +12,7 @@
 * Skewness
 * Kurtosis
 
-## Anomaly Detection (`isAnomaly(present, data, num)`)
+## [function] Anomaly Detection (`isAnomaly(present, data, num)`)
 
 #### Return if the sensor is anomalous
   
@@ -50,7 +50,7 @@
       * factor = 3 (three sigma)
 
   
-## Volatility Risk (**VI(data, num)**) Assessment
+## [function] Volatility Risk Assessment(`VI(data, num)`) 
 
 #### Return the volatility risk of the sensor
 
@@ -66,7 +66,7 @@
 * Our volatility measure is coefficient of variance
   * Ratio of standard deviation and mean in rolling window
 
-## Compliance Risk (**CI(present, upper, lower)**) Assessment
+## [function] Compliance Risk Assessment (`CI(present, upper, lower)`) 
 
 #### Return the compliance risk of the sensor
 
@@ -86,7 +86,7 @@
     * upper and lower thresholds are not hard coded, rather they are computed on a data-driven rolling window.
 
 
-## Dynamic Operating Threshold for Sensors
+## [function] Dynamic Operating Threshold for Sensors (`Thresholds(data, num)`) 
 
 #### Return safety operating margins both for compliance and volatility
 
@@ -113,7 +113,7 @@
 
 
 
-##  Sensor Health Score (**SensorHealthScore(CI, VI, thresholds, alpha)**)
+##  [function] Sensor Health Score (`SensorHealthScore(CI, VI, thresholds, alpha)`)
 
 #### Return the score that commbines overall sensor health, including compliance and volatility risks
 
@@ -192,7 +192,7 @@
     * message: healthy sensor
   
 
-##  Device Health Score (**DeviceHealthScore(id, num)**)
+##  [function] Device Health Score (`DeviceHealthScore(id, num)`)
 
 #### Return the score that commbines all sensor health, including compliance and volatility risks 
 
