@@ -12,7 +12,7 @@
 * Skewness
 * Kurtosis
 
-## Anomaly Detection (**isAnomaly(present, data, num)**)
+## Anomaly Detection (`isAnomaly(present, data, num)`)
 
 #### Return if the sensor is anomalous
   
