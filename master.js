@@ -1,44 +1,44 @@
 
 let inputData = [1, 2, 3, 9, 11, 12, 15, 17, 18, 21, 23, 24, 27];
 
-// This suporting function takes a time series data and find total number of elements 
-const Len = (data) => data.length
+
+export const Len = (data) => data.length
 console.log(Len(inputData))
 
-// This supporting function takes a time series data and find the sum of the elements 
-const Sum = (data) => data.reduce((acc, curr) => acc + curr);
+
+export const Sum = (data) => data.reduce((acc, curr) => acc + curr);
 console.log(Sum(inputData))
 
-// This supporting function takes a time series data and find the Mean of the elements
-const Mean = (data) => Sum(data)/Len(data)
+
+export const Mean = (data) => Sum(data)/Len(data)
 console.log(Mean(inputData))   
 
 // This supporting function takes a time series data and find the simple moving average. num is 
 // the number of previous data points used for the moving average computation. 
 
-const SMA = (data, num) => Sum(data.slice(-num))/Len(data.slice(-num))
+export const SMA = (data, num) => Sum(data.slice(-num))/Len(data.slice(-num))
 console.log(SMA(inputData, num=2))
 
 // Statistical moment is an important parameter for understanding the shape of the distribution
 
-const  nStatMoment = (data, n) => data.map(element => Math.pow((element - Mean(data)), n)).reduce((acc, curr) => acc + curr);
+export const  nStatMoment = (data, n) => data.map(element => Math.pow((element - Mean(data)), n)).reduce((acc, curr) => acc + curr);
 console.log(nStatMoment(inputData, 2))
 console.log(nStatMoment(inputData, 3))
 
 // Variance (bias corrected)
 
-const Variance = (data) => nStatMoment(data, 2)/(Len(data) - 1)
+export const Variance = (data) => nStatMoment(data, 2)/(Len(data) - 1)
 console.log(Variance(inputData))
 
-const Std = (data) => Math.sqrt(Variance(data))
+export const Std = (data) => Math.sqrt(Variance(data))
 console.log('standard deviation --- ', Std(inputData))
 
 //Skewness
-const Skew = (data) => nStatMoment(data, 3)/Math.pow(Std(inputData), 3)/Len(data)
+export const Skew = (data) => nStatMoment(data, 3)/Math.pow(Std(inputData), 3)/Len(data)
 console.log('skewness --- ', Skew(inputData))
 
 //Excess Kurtosis
-const Kurt = (data) => nStatMoment(data, 4)/Math.pow(Std(data), 4)/Len(data) - 3
+export const Kurt = (data) => nStatMoment(data, 4)/Math.pow(Std(data), 4)/Len(data) - 3
 console.log('Excess Kurtosis ---', Kurt(inputData))
 
  //Anomaly detection
