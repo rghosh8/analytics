@@ -24,7 +24,9 @@
     * num
       * num respresnt the time window
   * Return
-    * true/false: a boolean representing if the sensor is anomalous
+    * An object
+      * true/false: a boolean representing if the sensor is anomalous
+      * message which gives the context of the outcome
 
 #### Comment
 
